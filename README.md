@@ -12,8 +12,8 @@ To run DSE, open **`DocSearchEngine.exe`**. Input and output is currently handle
 - CMake 3.10+
 #### Build
 ```
-git clone https://github.com/alnazare/docsearchengine.git
-cd docsearchengine
+git clone https://github.com/alnazare/DocSearchEngine.git
+cd DocSearchEngine
 ```
 ```
 mkdir build
