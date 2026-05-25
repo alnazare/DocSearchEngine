@@ -42,7 +42,7 @@ bool ConverterJson::checkForJsonFiles()
 			std::cin >> input;
 			if (input == 'y')
 			{
-				regenerateJsonFile(1);
+				regenerateJsonFile(2);
 				break;
 			}
 			if (input == 'n')
