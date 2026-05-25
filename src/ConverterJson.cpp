@@ -15,6 +15,7 @@ bool ConverterJson::checkForJsonFiles()
 	std::ifstream file("config.json");
 	if (!file.is_open())
 	{
+		ok = false;
 		while (true)
 		{
 			std::cout << "Couldn't find config.json. Create one? (y/n)\n";
@@ -33,6 +34,7 @@ bool ConverterJson::checkForJsonFiles()
 	file.open("requests.json");
 	if (!file.is_open())
 	{
+		ok = false;
 		while (true)
 		{
 			std::cout << "Couldn't find requests.json. Create one? (y/n)\n";
