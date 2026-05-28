@@ -217,27 +217,34 @@ std::vector<std::string> ConverterJson::getRequests()
 */
 void ConverterJson::putAnswers(const std::vector<std::vector<RatedWordOccurrence>>& answers)
 {
-	nlohmann::json j;
+	nlohmann::ordered_json j;
 	unsigned int idCount{ 0 };
-	for (auto& requestResult : answers)
+	if (!answers.empty())
 	{
-		idCount++;
-		const std::string requestId{ std::format("request{:03}", idCount) };
-		if (!requestResult.empty())
+		for (auto& requestResult : answers)
 		{
-			j["answers"][requestId] = nlohmann::ordered_json{ {"result", "true"}, {"relevance", nlohmann::json::array()} };
-			for (auto& relevance : requestResult)
+			idCount++;
+			const std::string requestId{ std::format("request{:03}", idCount) };
+			if (!requestResult.empty())
 			{
-				j["answers"][requestId]["relevance"].push_back(nlohmann::ordered_json{
-					{"docid", relevance.docId},
-					{"rank", relevance.rating}
-					});
+				j["answers"][requestId] = { {"result", "true"}, {"relevance", nlohmann::json::array()} };
+				for (auto& relevance : requestResult)
+				{
+					j["answers"][requestId]["relevance"].push_back(nlohmann::ordered_json{
+						{"docid", relevance.docId},
+						{"rank", relevance.rating}
+						});
+				}
+			}
+			else
+			{
+				j["answers"][requestId]["result"] = "false";
 			}
 		}
-		else
-		{
-			j["answers"][requestId]["result"] = "false";
-		}
+	}
+	else
+	{
+		j = { {"answers", {}} };
 	}
 	std::ofstream output;
 	output.open("answers.json");
