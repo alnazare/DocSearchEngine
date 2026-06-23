@@ -1,6 +1,7 @@
 #ifndef THREADPOOL_H
 #define THREADPOOL_H
 
+#include <cstddef>
 #include <vector>
 #include <thread>
 #include <mutex>

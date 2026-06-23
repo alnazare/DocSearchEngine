@@ -2,11 +2,11 @@
 #define INVERTEDINDEX_H
 
 #include "WordOccurrenceStruct.h"
+#include <cstddef>
 #include <string>
 #include <vector>
 #include <map>
 #include <mutex>
- 
 
 class InvertedIndex
 {

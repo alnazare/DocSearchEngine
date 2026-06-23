@@ -3,6 +3,7 @@
 
 #include "nlohmann/json.hpp"
 #include "WordOccurrenceStruct.h"
+#include <cstddef>
 #include <string>
 #include <vector>
 
@@ -12,16 +13,17 @@ struct Configuration
 	size_t maxResults{0};
 };
 
-namespace ConverterJson
+class ConverterJson
 {
-	const std::string jsonFormatVersion{ "0.1" };
+public:
+	static std::string jsonFormatVersion() { return "0.1"; };
 
-	bool checkForJsonFiles();
-	std::vector<std::string> getDocContents();
-	Configuration getConfig();
-	std::vector<std::string> getRequests();
-	void putAnswers(const std::vector<std::vector<RatedWordOccurrence>>& answers);
-	void regenerateJsonFile(unsigned short which);
+	static bool checkForJsonFiles();
+	static std::vector<std::string> getDocContents();
+	static Configuration getConfig();
+	static std::vector<std::string> getRequests();
+	static void putAnswers(const std::vector<std::vector<RatedWordOccurrence>>& answers);
+	static void regenerateJsonFile(unsigned short which);
 };
 
 #endif // !CONVERTERJSON_H

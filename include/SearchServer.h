@@ -3,6 +3,7 @@
 
 #include "InvertedIndex.h"
 #include "WordOccurrenceStruct.h"
+#include <cstddef>
 #include <vector>
 
 class SearchServer

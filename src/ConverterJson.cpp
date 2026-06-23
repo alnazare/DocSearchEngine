@@ -61,11 +61,11 @@ std::vector<std::string> ConverterJson::getDocContents()
 	try
 	{
 		std::ifstream input("config.json");
-		if (!input.is_open()) throw std::exception("No config.json found");
+		if (!input.is_open()) throw std::runtime_error("No config.json found");
 		nlohmann::json j{ nlohmann::json::parse(input) };
 		input.close();
 
-		if (!j.count("config")) throw std::exception("Invalid config.json (missing config containter)");
+		if (!j.count("config")) throw std::runtime_error("Invalid config.json (missing config containter)");
 
 		unsigned int invalidPathCounter{ 0 };
 		if (j.count("files"))
@@ -141,17 +141,19 @@ Configuration ConverterJson::getConfig()
 	try
 	{
 		std::ifstream input("config.json");
-		if (!input.is_open()) throw std::exception("No config.json found");
+		if (!input.is_open()) throw std::runtime_error("No config.json found");
 		nlohmann::json j{ nlohmann::json::parse(input) };
 		input.close();
-		if (!j.count("config")) throw std::exception("Invalid config.json (missing config containter)");
-		if (!j.at("config").count("max_responses")) throw std::exception("Invalid config.json (missing max_responses)");
+		if (!j.count("config")) throw std::runtime_error("Invalid config.json (missing config containter)");
 
 		Configuration config;
 		config.version = j["config"]["version"];
-		if (config.version != jsonFormatVersion) throw std::exception("Invalid config.json (wrong version)");
+		if (config.version != jsonFormatVersion()) throw std::runtime_error("Invalid config.json (wrong version)");
 		config.displayName = j["config"]["name"];
-		config.maxResults = j["config"]["max_responses"];
+		if (j.at("config").count("max_responses"))
+			config.maxResults = j["config"]["max_responses"];
+		else 
+			config.maxResults = 5;
 		return config;
 	}
 	catch (const std::exception& e)
@@ -182,12 +184,12 @@ std::vector<std::string> ConverterJson::getRequests()
 	try
 	{
 		std::ifstream input("requests.json");
-		if (!input.is_open()) throw std::exception("No requests.json found");
+		if (!input.is_open()) throw std::runtime_error("No requests.json found");
 		nlohmann::json j{ nlohmann::json::parse(input) };
 		input.close();
 
 		if (!j.count("requests")) 
-			throw std::exception("Invalid requests.json (missing requests container)");
+			throw std::runtime_error("Invalid requests.json (missing requests container)");
 		if (j.at("requests").empty()) std::cout << "WARNING: requests.json has no requests included\n";
 		std::vector<std::string> vec = j.at("requests");
 		return vec;
@@ -264,8 +266,8 @@ void ConverterJson::regenerateJsonFile(unsigned short which)
 		j = {
 			{"config",
 				{{"name", ""},
-				{"version", jsonFormatVersion},
-				{"max_responses", 0}}
+				{"version", jsonFormatVersion()},
+				{"max_responses", 5}}
 			},
 			{"files", nlohmann::json::array()}
 			};

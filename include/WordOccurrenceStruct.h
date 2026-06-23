@@ -1,6 +1,8 @@
 #ifndef WORDOCCURRENCESTRUCT_H
 #define WORDOCCURRENCESTRUCT_H
 
+#include <cstddef>
+
 struct WordOccurrence
 {
 	size_t docId;
@@ -24,7 +26,7 @@ struct RatedWordOccurrence
 
 	bool operator==(const RatedWordOccurrence& other) const
 	{
-		return (docId == other.docId);
+		return (docId == other.docId && rating == other.rating);
 	}
 };
 

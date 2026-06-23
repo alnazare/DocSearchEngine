@@ -1,5 +1,6 @@
 #include "InvertedIndex.h"
 #include "ThreadPool.h"
+#include <cstddef>
 #include <iostream>
 #include <thread>
 #include <sstream>

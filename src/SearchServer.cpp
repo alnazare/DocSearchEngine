@@ -1,4 +1,5 @@
 #include "SearchServer.h"
+#include <cstddef>
 #include <sstream>
 #include <algorithm>
 #include <iostream>
@@ -14,7 +15,7 @@ std::vector<std::vector<RatedWordOccurrence>> SearchServer::search(const std::ve
 {
 	std::cout << "Processing " << queries.size() << " search request(s)...\n";
 
-	try {if (invertedIndex_ == nullptr) throw std::exception("SearchServer is attempting to search with no known InvertedIndex");}
+	try {if (invertedIndex_ == nullptr) throw std::runtime_error("SearchServer is attempting to search with no known InvertedIndex");}
 	catch (const std::exception& e)
 	{
 		std::cerr << "ERROR: " << e.what() << '\n';
@@ -36,13 +37,14 @@ std::vector<std::vector<RatedWordOccurrence>> SearchServer::search(const std::ve
 			tokens.push_back(buffer);
 		}
 
-		// sort tokens by rarity (asc.)
+		// sort tokens by rarity (asc.) and remove duplicates
 		std::sort(tokens.begin(), tokens.end(),
 			[&](const std::string& a, const std::string& b)
 			{ return invertedIndex_->getDocumentCount(a) < invertedIndex_->getDocumentCount(b); });
+		tokens.erase(std::unique(tokens.begin(), tokens.end()), tokens.end());
 
 		// go through each token, starting with the rarest one, and find common docId's 
-		const std::vector<WordOccurrence> occs{ invertedIndex_->getSortedOccurrences(tokens[0].data())};
+		const std::vector<WordOccurrence> occs{ invertedIndex_->getSortedOccurrences(tokens[0])};
 		if (!occs.empty())
 		{
 			std::vector<RatedWordOccurrence>& result{ results[i] };
@@ -56,7 +58,7 @@ std::vector<std::vector<RatedWordOccurrence>> SearchServer::search(const std::ve
 			for (size_t j{ 1 }; j < tokens.size(); j++)
 			{
 				std::vector<RatedWordOccurrence> currentResult{ result };
-				auto occurrences = invertedIndex_->getSortedOccurrences(tokens[j].data());
+				auto occurrences = invertedIndex_->getSortedOccurrences(tokens[j]);
 				result.clear();
 				if (occurrences.empty())
 					break;

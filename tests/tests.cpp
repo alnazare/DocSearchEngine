@@ -63,7 +63,7 @@ TEST(InvertedIndexTestCase, TestBasic3)
 }
 
 
-// SS tests
+// SearchServer tests
 TEST(SearchServerTestCase, TestBasic1)
 {
 	const std::vector<std::string> docs{
