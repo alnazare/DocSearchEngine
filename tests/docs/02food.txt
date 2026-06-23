@@ -1,0 +1,19 @@
+apple apples
+pear pears
+orange oranges
+grape grapes
+berry berries
+
+cucumber cucumbers
+tomato tomatoes
+
+fruit fruits
+vegetable vegetables
+
+water
+tea
+coffee
+milk
+cheese
+wine
+beer
