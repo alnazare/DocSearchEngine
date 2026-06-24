@@ -2,7 +2,7 @@
 
 ## Usage
 To run DSE, open **`DocSearchEngine.exe`**. Input and output is currently handled through three .json files:
-- **```config.json```** holds basic configuration (display name, maximum responses per request number, etc.) and defines the document database location(s) - both folder and file paths are supported; the current implementation processes **.txt and .md files only**. Additionally, the "version" field keeps track of the config format version and shouldn't be edited in most cases;
+- **```config.json```** holds basic configuration (display name, maximum responses per request number, etc.) and defines the document database location(s) - both folder and file paths are supported; the current implementation processes absolute paths and **.txt and .md files only**. Additionally, the "version" field keeps track of the config format version and shouldn't be edited in most cases;
 - **```requests.json```** holds the search requests, which will be used by the program to sift through the documents specified in *config.json*. A request may contain multiple words - the current implementation will try to find documents that contain the full query;
 - **```answers.json```** holds the serialized program output - the queries' results are displayed in order, and all results per one query are printed out from most to least relevant.
 
@@ -21,3 +21,4 @@ cd build
 cmake ..
 cmake --build
 ```
+By default, the runtime input and output files will be opened from the code's build folder. You may use the example documents in tests/docs for testing the functionality.
